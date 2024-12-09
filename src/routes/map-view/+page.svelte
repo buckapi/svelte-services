@@ -20,31 +20,31 @@
                         <li>
                             <div class="single-checkbox">
                                 <input type="radio" name="check-box" id="check1">
-                                <label for="check1"><span></span>All</label>
+                                <label for="check1"><span></span>Todos</label>
                             </div>
                         </li>
                         <li>
                             <div class="single-checkbox">
                                 <input type="radio" name="check-box" id="check2">
-                                <label for="check2"><span></span>Doctor</label>    
+                                <label for="check2"><span></span>Plomeros</label>    
                             </div>
                         </li>
                         <li>
                             <div class="single-checkbox">
                                 <input type="radio" name="check-box" id="check3" checked="{true}"          >
-                                <label for="check3"><span></span>Clinic</label>
+                                <label for="check3"><span></span>Mecanicos</label>
                             </div>
                         </li>
                     </ul>
                     <form action="index.html" method="post">
                         <div class="form-group clearfix">
-                            <select class="wide">
+                          <!--   <select class="wide">
                                <option data-display="Select Location">Select Location</option>
                                <option value="1">California</option>
                                <option value="2">New York</option>
                                <option value="3">Sun Francis</option>
                                <option value="4">Shicago</option>
-                            </select>
+                            </select> -->
                             <input type="text" name="name" placeholder="Ex. Name, Specialization..." required={true}>
                             <button type="submit" class="theme-btn-one" aria-label="Buscar"><i class="icon-Arrow-Right"></i></button>
                         </div>
@@ -53,7 +53,7 @@
                 <div class="content-side clinic-section">
                     <div class="item-shorting clearfix">
                         <div class="left-column pull-left">
-                            <h3>Showing 1-6 of 20 Results</h3>
+                            <h3>Mostrando 1-6 of 20 Resultados</h3>
                         </div>
                         <div class="right-column pull-right clearfix">
                             <div class="short-box clearfix">
@@ -641,7 +641,7 @@
                                         <img src={specialist.images[0] || "assets/images/resource/doctor-1.png"} alt={specialist.full_name}>
                                     </figure>
                                     <div class="shape" style="background-image: url(assets/images/shape/shape-78.png);"></div>
-                                    <h3><a href="doctors-dashboard.html">Dr. {specialist.full_name}</a></h3>
+                                    <h3><a href="doctors-dashboard.html"> {specialist.full_name}</a></h3>
                                     <span class="designation">{specialist.specialization}</span>
                                     <ul class="info clearfix">
                                         <li>

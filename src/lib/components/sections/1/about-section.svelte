@@ -18,8 +18,8 @@
                     <div class="content_block_1">
                         <div class="content-box">
                             <div class="sec-title">
-                                <p>Acerca de Docpro</p>
-                                <h2>Lleva la atención médica a tu hogar con un solo clic</h2>
+                                <p>Acerca de ServiApp</p>
+                                <h2> Nuestra historia</h2>
                             </div>
                             <div class="text">
                                 <p>Lorem ipsum dolor sit amet consectur adipiscing elit sed eiusmod ex tempor incididunt labore dolore magna aliquaenim ad minim veniam quis nostrud exercitation ullamco laboris.</p>

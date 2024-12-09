@@ -20,19 +20,19 @@
                             <li>
                                 <div class="single-checkbox">
                                     <input type="radio" name="check-box" id="check1" checked={true}>
-                                    <label for="check1"><span></span>All</label>
+                                    <label for="check1"><span></span>Todos</label>
                                 </div>
                             </li>
                             <li>
                                 <div class="single-checkbox">
                                     <input type="radio" name="check-box" id="check2">
-                                    <label for="check2"><span></span>Doctor</label>    
+                                    <label for="check2"><span></span>Plomeros</label>    
                                 </div>
                             </li>
                             <li>
                                 <div class="single-checkbox">
                                     <input type="radio" name="check-box" id="check3">
-                                    <label for="check3"><span></span>Clinic</label>
+                                    <label for="check3"><span></span>Mecanicos</label>
                                 </div>
                             </li>
                         </ul>

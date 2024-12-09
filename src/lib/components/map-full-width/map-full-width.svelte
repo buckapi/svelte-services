@@ -49,13 +49,13 @@
             <div class="form-inner">
                 <form action="index.html" method="post">
                     <div class="form-group clearfix">
-                        <select class="wide">
+                       <!--  <select class="wide">
                            <option data-display="Select Location">New York</option>
                            <option value="1">California</option>
                            <option value="2">Sun Francis</option>
                            <option value="3">Shicago</option>
                            <option value="4">Atlanta</option>
-                        </select>
+                        </select> -->
                         <input type="text" name="name" placeholder="Ex. Name, Specialization..." required={true}>
                         <button type="submit" aria-label="Buscar" class="search-btn">
                             <i class="icon-Arrow-Right"></i>

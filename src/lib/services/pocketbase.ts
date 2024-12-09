@@ -13,16 +13,16 @@ export async function initializeRealtimeSpecialists() {
         await pb.collection('users').authWithPassword('platform@conectavet.cl', 'HVPO86drd_D5Zon');
 
         // Suscribirse a cambios
-        pb.collection('members').subscribe('*', async () => {
+        pb.collection('workers').subscribe('*', async () => {
             // Actualizar lista cuando hay cambios
-            const records = await pb.collection('members').getFullList(200, {
+            const records = await pb.collection('workers').getFullList(200, {
                 sort: '-created',
             });
             specialists.set(records);
         });
 
         // Cargar lista inicial
-        const initialRecords = await pb.collection('members').getFullList(200, {
+        const initialRecords = await pb.collection('workers').getFullList(200, {
             sort: '-created',
         });
         specialists.set(initialRecords);
