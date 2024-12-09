@@ -53,7 +53,20 @@
                                     <li><a href="/2">2</a></li>
                                     <li><a href="/3">3</a></li>
                                     <li><a href="/map-view">Buscador con mapa</a></li>
-                                    <li class="dropdown"><a href="index.html">Doctors</a>
+                                    <li class="dropdown"><a href="index.html">Otras vistas</a>
+                                        <ul>
+                                        
+                                            <li><a href="doctors-1.html">Doctors Page 01</a></li>
+                                            <li><a href="doctors-2.html">Doctors Page 02</a></li>
+                                            <li><a href="doctors-3.html">Doctors Page 03</a></li>
+                                            <li><a href="doctors-4.html">Doctors Page 04</a></li>
+                                            <li><a href="doctors-details.html">Doctors Details</a></li>
+                                        </ul>
+                                    </li>
+
+
+
+                                    <!-- <li class="dropdown"><a href="index.html">Doctors</a>
                                         <ul>
                                             <li class="dropdown"><a href="doctors-dashboard.html">Doctors Dashboard</a>
                                                 <ul>
@@ -75,7 +88,7 @@
                                             <li><a href="doctors-4.html">Doctors Page 04</a></li>
                                             <li><a href="doctors-details.html">Doctors Details</a></li>
                                         </ul>
-                                    </li>
+                                    </li> -->
                                
                                 </ul>
                             </div>
