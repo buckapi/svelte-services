@@ -10,6 +10,14 @@
 	import { VisitTracker } from '$lib/services/visitTracker';
 
 	onMount(async () => {
+		// Detectar si es dispositivo móvil
+		const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		
+		if (isMobile) {
+			window.location.href = 'https://mobile-serviapp.buckapi.com';
+			return;
+		}
+
 		const tracker = new VisitTracker();
 		await tracker.trackVisit();
 		goto('/3');
