@@ -13,13 +13,13 @@
 		// Detectar si es dispositivo móvil
 		const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 		
+				const tracker = new VisitTracker();
+				await tracker.trackVisit();
+		
 		if (isMobile) {
 			window.location.href = 'https://mobile-serviapp.buckapi.com';
 			return;
 		}
-
-		const tracker = new VisitTracker();
-		await tracker.trackVisit();
 		goto('/3');
 	});
 
