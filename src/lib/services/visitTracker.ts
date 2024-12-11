@@ -9,6 +9,20 @@ export class VisitTracker {
         this.apiUrl = 'https://db.conectavet.cl:8080';
         this.appName = 'Serviapp';
     }
+    async getVisits() {
+        try {
+            const response = await fetch(`${this.apiUrl}/api/collections/visits/records`);
+            if (!response.ok) {
+                throw new Error('Error al obtener las visitas');
+            }
+            const data = await response.json();
+            alert(data.items);
+            return data.items;
+        } catch (error) {
+            console.error('Error al obtener las visitas:', error);
+            return [];
+        }
+    }
 
     async getVisitorInfo() {
         const parser = new UAParser();
