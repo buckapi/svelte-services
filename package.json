@@ -36,6 +36,8 @@
 		"vitest": "^2.0.4"
 	},
 	"dependencies": {
-		"pocketbase": "^0.22.1"
+		"axios": "^1.7.9",
+		"pocketbase": "^0.22.1",
+		"ua-parser-js": "^2.0.0"
 	}
 }

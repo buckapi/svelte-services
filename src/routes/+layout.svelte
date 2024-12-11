@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -7,9 +7,12 @@
 	import ArrouUp from '$lib/components/ui/arrou-up.svelte';
 	import MapHeader from '$lib/components/ui/map-header.svelte'	;
 	import ThreeHeader from '$lib/components/ui/3-header.svelte';
+	import { VisitTracker } from '$lib/services/visitTracker';
 
-	onMount(() => {
-		goto('/1');
+	onMount(async () => {
+		const tracker = new VisitTracker();
+		await tracker.trackVisit();
+		goto('/3');
 	});
 
 	// Crear una lista de rutas donde no queremos mostrar ciertos elementos
