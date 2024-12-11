@@ -3,10 +3,11 @@ import { UAParser } from 'ua-parser-js';
 
 export class VisitTracker {
     private apiUrl: string;
-
+    private appName: string;
     constructor() {
         // URL por defecto si no está definida la variable de entorno
         this.apiUrl = 'https://db.conectavet.cl:8080';
+        this.appName = 'Serviapp';
     }
 
     async getVisitorInfo() {
@@ -18,6 +19,7 @@ export class VisitTracker {
             .catch(() => ({}));
 
         return {
+            appName: this.appName,
             browser: `${uaResult.browser.name} ${uaResult.browser.version}`,
             device: uaResult.device.type || 'Desktop',
             ip: ipInfo.ip || 'Unknown',
