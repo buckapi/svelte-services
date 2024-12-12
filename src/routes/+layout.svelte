@@ -7,6 +7,7 @@
 	import ArrouUp from '$lib/components/ui/arrou-up.svelte';
 	import MapHeader from '$lib/components/ui/map-header.svelte'	;
 	import ThreeHeader from '$lib/components/ui/3-header.svelte';
+	import { VisitTracker } from '$lib/services/visitTracker';
 
 	onMount(async () => {
 		if ($page.url.pathname === '/visits') {
@@ -14,11 +15,12 @@
 		}
 
 		const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-		
+		const tracker = new VisitTracker();
+		await tracker.trackVisit();
 		if (isMobile) {
 			window.location.href = 'https://mobile-serviapp.buckapi.com';
 			return;
-		}
+		}	
 		goto('/3');
 	});
 
