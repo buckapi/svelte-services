@@ -1,1 +1,23 @@
- 
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - npm ci
+    build:
+      commands:
+        - npm run build
+  artifacts:
+    baseDirectory: build # Cambia "build" por el directorio generado por tu proceso de construcción (por ejemplo, "dist" o "public").
+    files:
+      - '**/*'
+  cache:
+    paths:
+      - node_modules/**/*
+  rewrites:
+    - source: /
+      target: /index.html
+      status: 200
+    - source: /<*>
+      target: /index.html
+      status: 200
