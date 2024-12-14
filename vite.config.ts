@@ -1,13 +1,11 @@
-import { defineConfig } from 'vitest/config';
 import { sveltekit } from '@sveltejs/kit/vite';
+import { defineConfig } from 'vite';
 
 export default defineConfig({
 	plugins: [sveltekit()],
 	server: {
-		host: '0.0.0.0', // Escucha en todas las interfaces de red
-		port: 5734       // Puerto que deseas usar
+		host: true,
+		port: 3000
 	},
-	test: {
-		include: ['src/**/*.{test,spec}.{js,ts}']
-	}
+	envPrefix: ['VITE_', 'PUBLIC_']
 });

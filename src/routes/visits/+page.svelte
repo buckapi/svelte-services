@@ -1,6 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { PUBLIC_API_URL } from '$env/static/public';
+    import { env } from '$env/dynamic/public';
     
     interface Visit {
         id: string;
@@ -58,14 +58,14 @@
 
     onMount(async () => {
         try {
-            const response = await fetch(`${PUBLIC_API_URL}/api/visits`);
+            const response = await fetch(`${env.PUBLIC_API_URL}/api/collections/visits/records`);
             const result = await response.json();
             
-            if (!result.success) {
-                throw new Error(result.error || 'Error al cargar las visitas');
+            if (!result.items) {
+                throw new Error('Error al cargar las visitas');
             }
 
-            visits = Array.isArray(result.visits) ? result.visits : [];
+            visits = result.items;
             
             visitsPerDevice = visits.reduce<VisitsPerDevice>((acc, visit) => {
                 const deviceId = visit.userAgent;
