@@ -13,14 +13,19 @@
 		if ($page.url.pathname === '/visits') {
 			return;
 		}
-
-		const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+		
 		const tracker = new VisitTracker();
 		await tracker.trackVisit();
+
+		const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+			navigator.userAgent
+		);
+		
 		if (isMobile) {
 			window.location.href = 'https://mobile-serviapp.buckapi.com';
 			return;
-		}	
+		}
+		
 		goto('/3');
 	});
 
