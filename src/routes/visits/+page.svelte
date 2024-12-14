@@ -1,5 +1,6 @@
 <script lang="ts">
     import { onMount } from 'svelte';
+    import { PUBLIC_API_URL } from '$env/static/public';
     
     interface Visit {
         id: string;
@@ -57,7 +58,7 @@
 
     onMount(async () => {
         try {
-            const response = await fetch('/api/visits');
+            const response = await fetch(`${PUBLIC_API_URL}/api/visits`);
             const result = await response.json();
             
             if (!result.success) {
