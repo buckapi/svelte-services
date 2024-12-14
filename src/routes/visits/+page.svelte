@@ -1,115 +1,211 @@
 <script lang="ts">
-    import type { VisitsResponse } from '$lib/types/visit';
-
-    export let data: VisitsResponse;
+    import { onMount } from 'svelte';
     
-    const formatDate = (dateString: string) => {
-        return new Date(dateString).toLocaleString();
-    };
+    interface Visit {
+        id: string;
+        collectionId: string;
+        collectionName: string;
+        created: string;
+        updated: string;
+        browser: string;
+        device: string;
+        appName: string;
+        ip: string;
+        country: string;
+        datetime: string;
+        userAgent: string;
+        visitCount: number;
+        location: null | any;
+        deviceId?: string;
+        deviceType?: string;
+        deviceModel?: string;
+        deviceVendor?: string;
+        deviceOs?: string;
+        deviceOsVersion?: string;
+    }
 
-    console.log('Datos recibidos:', data); // Para depuración
+    interface DeviceInfo {
+        type: string;
+        model: string;
+        vendor: string;
+        os: string;
+        osVersion: string;
+    }
+
+    interface VisitsPerDevice {
+        [deviceId: string]: Visit[];
+    }
+
+    let visits: Visit[] = [];
+    let visitsPerDevice: VisitsPerDevice = {};
+    let loading = true;
+    let error: string | null = null;
+
+    function parseDeviceInfo(deviceString: string): DeviceInfo {
+        try {
+            return JSON.parse(deviceString);
+        } catch {
+            return {
+                type: 'unknown',
+                model: 'unknown',
+                vendor: 'unknown',
+                os: 'unknown',
+                osVersion: 'unknown'
+            };
+        }
+    }
+
+    onMount(async () => {
+        try {
+            const response = await fetch('/api/visits');
+            const result = await response.json();
+            
+            if (!result.success) {
+                throw new Error(result.error || 'Error al cargar las visitas');
+            }
+
+            visits = Array.isArray(result.visits) ? result.visits : [];
+            
+            visitsPerDevice = visits.reduce<VisitsPerDevice>((acc, visit) => {
+                const deviceId = visit.userAgent;
+                if (!acc[deviceId]) {
+                    acc[deviceId] = [];
+                }
+                acc[deviceId].push({
+                    ...visit,
+                    deviceId,
+                    deviceType: parseDeviceInfo(visit.device).type,
+                    deviceModel: parseDeviceInfo(visit.device).model,
+                    deviceVendor: parseDeviceInfo(visit.device).vendor,
+                    deviceOs: parseDeviceInfo(visit.device).os,
+                    deviceOsVersion: parseDeviceInfo(visit.device).osVersion
+                });
+                return acc;
+            }, {});
+
+        } catch (err) {
+            error = err instanceof Error ? err.message : 'Error desconocido';
+            console.error('Error al cargar visitas:', err);
+        } finally {
+            loading = false;
+        }
+    });
+
+    function formatDate(dateStr: string): string {
+        return new Date(dateStr).toLocaleString();
+    }
 </script>
 
 <div class="visits-container">
-    <h1 class="title">Registro de Visitas</h1>
-    <p class="total-visits">Total de visitas: {data.totalItems}</p>
+    <h1>Registro de Visitas</h1>
     
-    {#if data && data.items && data.items.length > 0}
-        <div class="table-wrapper">
-            <table class="visits-table">
-                <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>País</th>
-                        <th>Dispositivo</th>
-                        <th>Navegador</th>
-                        <th>IP</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {#each data.items as visit}
-                        <tr>
-                            <td>{formatDate(visit.datetime)}</td>
-                            <td>{visit.country}</td>
-                            <td>{visit.device}</td>
-                            <td>{visit.browser}</td>
-                            <td>{visit.ip}</td>
-                        </tr>
-                    {/each}
-                </tbody>
-            </table>
+    {#if loading}
+        <div class="loading">Cargando visitas...</div>
+    {:else if error}
+        <div class="error-message">
+            {error}
+        </div>
+    {:else if Object.keys(visitsPerDevice).length === 0}
+        <div class="no-visits">
+            No hay visitas registradas aún.
         </div>
     {:else}
-        <p class="no-data">No hay visitas para mostrar</p>
+        {#each Object.entries(visitsPerDevice) as [deviceId, deviceVisits]}
+            <div class="device-section">
+                <h2>Dispositivo {deviceId}</h2>
+                <div class="device-info">
+                    <p>Navegador: {deviceVisits[0].browser}</p>
+                    <p>Sistema Operativo: {deviceVisits[0].deviceOs} {deviceVisits[0].deviceOsVersion}</p>
+                    <p>Tipo: {deviceVisits[0].deviceType}</p>
+                    {#if deviceVisits[0].deviceModel !== 'unknown'}
+                        <p>Modelo: {deviceVisits[0].deviceModel}</p>
+                    {/if}
+                    {#if deviceVisits[0].deviceVendor !== 'unknown'}
+                        <p>Fabricante: {deviceVisits[0].deviceVendor}</p>
+                    {/if}
+                    <p>País: {deviceVisits[0].country}</p>
+                    <p>IP: {deviceVisits[0].ip}</p>
+                    <p>Total visitas: {deviceVisits.length}</p>
+                </div>
+                
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha y Hora</th>
+                            <th>Contador de Visitas</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {#each deviceVisits as visit}
+                            <tr>
+                                <td>{formatDate(visit.datetime)}</td>
+                                <td>{visit.visitCount}</td>
+                            </tr>
+                        {/each}
+                    </tbody>
+                </table>
+            </div>
+        {/each}
     {/if}
-</div> 
+</div>
 
 <style>
     .visits-container {
+        padding: 2rem;
         max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1rem;
+        margin: 0 auto;
     }
 
-    .title {
-        color: #2c3e50;
-        font-size: 2rem;
-        margin-bottom: 1.5rem;
+    .loading {
         text-align: center;
-    }
-
-    .total-visits {
-        font-size: 1.1rem;
+        padding: 2rem;
         color: #666;
-        margin-bottom: 2rem;
     }
 
-    .table-wrapper {
-        overflow-x: auto;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    .error-message {
+        padding: 1rem;
+        margin: 1rem 0;
+        background-color: #fff3f3;
+        border: 1px solid #ffcdd2;
+        border-radius: 4px;
+        color: #d32f2f;
+    }
+
+    .no-visits {
+        padding: 2rem;
+        text-align: center;
+        color: #666;
+        background-color: #f5f5f5;
         border-radius: 8px;
     }
 
-    .visits-table {
+    .device-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+    }
+
+    .device-info {
+        margin: 1rem 0;
+        padding: 1rem;
+        background-color: #f5f5f5;
+        border-radius: 4px;
+    }
+
+    table {
         width: 100%;
         border-collapse: collapse;
-        background-color: white;
+        margin-top: 1rem;
     }
 
-    .visits-table th {
-        background-color: #3498db;
-        color: white;
-        padding: 1rem;
+    th, td {
+        padding: 0.5rem;
         text-align: left;
+        border-bottom: 1px solid #ddd;
     }
 
-    .visits-table td {
-        padding: 0.8rem 1rem;
-        border-bottom: 1px solid #eee;
-    }
-
-    .visits-table tr:hover {
-        background-color: #f5f6fa;
-    }
-
-    .no-data {
-        text-align: center;
-        color: #666;
-        font-style: italic;
-        padding: 2rem;
-        background-color: #f8f9fa;
-        border-radius: 8px;
-    }
-
-    @media (max-width: 768px) {
-        .title {
-            font-size: 1.5rem;
-        }
-
-        .visits-table th,
-        .visits-table td {
-            padding: 0.6rem;
-            font-size: 0.9rem;
-        }
+    th {
+        background-color: #f0f0f0;
     }
 </style> 
