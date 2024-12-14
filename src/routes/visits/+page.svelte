@@ -58,7 +58,10 @@
 
     onMount(async () => {
         try {
-            const response = await fetch(`${env.PUBLIC_API_URL}/api/collections/visits/records`);
+            const apiUrl = env.PUBLIC_API_URL || 'https://db.conectavet.cl:8080';
+            console.log('API URL:', apiUrl);
+            
+            const response = await fetch(`${apiUrl}/api/collections/visits/records`);
             const result = await response.json();
             
             if (!result.items) {
